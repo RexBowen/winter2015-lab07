@@ -27,7 +27,8 @@ class Welcome extends Application {
         foreach($map as $str) {
             if(substr_compare($str, $test, strlen($str)-strlen($test), strlen($test)) === 0)
             { 
-                array_push($files, array('file'=>$str));
+                //remove the file extension, where 4 is the length of the extension
+                array_push($files, array('filename'=>substr($str, 0, strlen($str)-4)));
             }
         }
 	$this->data['pagebody'] = 'homepage';
@@ -45,6 +46,8 @@ class Welcome extends Application {
 	
 	// Present the list to choose from
 	$this->data['pagebody'] = 'justone';
+        $this->data['filename'] = $filename;
+        $this->menu->patties();
 	$this->render();
     }
     
