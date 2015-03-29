@@ -21,9 +21,17 @@ class Welcome extends Application {
     function index()
     {
 	// Build a list of orders
-	
-	// Present the list to choose from
+        $test = '.xml';
+	$map = directory_map('./data/');
+        $files = array();
+        foreach($map as $str) {
+            if(substr_compare($str, $test, strlen($str)-strlen($test), strlen($test)) === 0)
+            { 
+                array_push($files, array('file'=>$str));
+            }
+        }
 	$this->data['pagebody'] = 'homepage';
+        $this->data['files'] = $files; 
 	$this->render();
     }
     
