@@ -41,7 +41,7 @@ class Menu extends CI_Model {
             $cheeses[$record->code] = $record;
         }
     }
-    
+
     //sauce have no price
     private function __readSauce() {
         foreach ($this->xml->sauces->sauce as $item) {
@@ -52,8 +52,7 @@ class Menu extends CI_Model {
         }
     }
 
-    
-        private function __readTopping() {
+    private function __readTopping() {
         foreach ($this->xml->toppings->topping as $item) {
             $record = new stdClass();
             $record->code = (string) $item['code'];
@@ -63,12 +62,10 @@ class Menu extends CI_Model {
         }
     }
 
-
-    // retrieve a list of patties, to populate a dropdown, for instance
+    // Not used
     function patties() {
         return $this->patty_names;
     }
-
 
     function getCheese($code) {
         if (isset($this->cheeses[$code]))
@@ -77,9 +74,9 @@ class Menu extends CI_Model {
             return null;
     }
 
-    function getPatty($code) {
-        if (isset($this->patties[$code]))
-            return $this->patties[$code];
+    function getSauce($code) {
+        if (isset($this->sauces[$code]))
+            return $this->sauces[$code];
         else
             return null;
     }
@@ -91,9 +88,9 @@ class Menu extends CI_Model {
             return null;
     }
 
-    function getPatty($code) {
-        if (isset($this->patties[$code]))
-            return $this->patties[$code];
+    function getTopping($code) {
+        if (isset($this->toppings[$code]))
+            return $this->toppings[$code];
         else
             return null;
     }
