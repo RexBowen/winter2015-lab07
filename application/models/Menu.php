@@ -26,10 +26,10 @@ class Menu extends CI_Model {
             $record->price = (float) $patty['price'];
             $patties[$record->code] = $record;
         }
-
-        __readCheese();
-        __readSauce();
-        __readTopping();
+        /*
+        $this->__readCheese();
+        $this->__readSauce();
+        $this->__readTopping();*/
     }
 
     private function __readCheese() {
@@ -38,7 +38,7 @@ class Menu extends CI_Model {
             $record->code = (string) $item['code'];
             $record->name = (string) $item;
             $record->price = (float) $item['price'];
-            $cheeses[$record->code] = $record;
+            $this->$cheeses[$record->code] = $record;
         }
     }
 
@@ -48,7 +48,7 @@ class Menu extends CI_Model {
             $record = new stdClass();
             $record->code = (string) $item['code'];
             $record->name = (string) $item;
-            $sauces[$record->code] = $record;
+            $this->$sauces[$record->code] = $record;
         }
     }
 
@@ -58,11 +58,11 @@ class Menu extends CI_Model {
             $record->code = (string) $item['code'];
             $record->name = (string) $item;
             $record->price = (float) $item['price'];
-            $toppings[$record->code] = $record;
+            $this->$toppings[$record->code] = $record;
         }
     }
 
-    // Not used
+    // Not used 
     function patties() {
         return $this->patty_names;
     }
