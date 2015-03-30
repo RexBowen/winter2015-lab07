@@ -58,23 +58,51 @@ class Welcome extends Application {
             array_push($burger_list, array(
                 'name' => '*Burger #' . $count++ . '*',
                 'base' => $this->menu->getPatty($burger->patty),
-                'cheese' => ' '.$this->menu->getCheese($burger->top) . ' '.
-                $this->menu->getCheese($burger->bottom),
-                'sauces' => $this->__getSauce($burger)
-                
+                'cheese' => $this->__getCheese($burger),
+                'sauces' => $this->__getSauce($burger),
+                'toppings' =>$this->__getTopping($burger)
             ));
         }
         $this->data['burgers'] = $burger_list;
         $this->render();
     }
+
+    private function __getCheese($burger) {
+            //tried to test with is_null, didn't work
+        if (($burger->top)=='' && ($burger->bottom)=='')
+            return '';
+        $result = 'Cheese:';
+        if (($burger->top)!='')
+            $result.=' ' . $this->menu->getCheese($burger->top) . '(top)';
+
+        if (($burger->bottom)!='')
+            $result.=' ' . $this->menu->getCheese($burger->bottom) . '(bottom)';
+
+        return $result;
+    }
     
-    private function __getSauce($burger){
-        if(count($burger->sauces)== 0) return '';
-        $result = 'Sauces: ';
-        foreach($burger->sauces as $sauce) {
-            $result.=$sauce;
-        }
+    private function __getTopping($burger) {
         
+        if (count($burger->toppings) == 0)
+            return 'Toppings: none';
+
+        $result = 'Toppings:';
+        foreach ($burger->toppings as $item) {
+            $result.=' '.$this->menu->getTopping((string) $item);
+        }
+
+        return $result;
+    }
+
+    private function __getSauce($burger) {
+        if (count($burger->sauces) == 0)
+            return 'Sauces: none';
+
+        $result = 'Sauces:';
+        foreach ($burger->sauces as $sauce) {
+            $result.=' '.$this->menu->getSauce((string) $sauce);
+        }
+
         return $result;
     }
 

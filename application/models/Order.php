@@ -10,44 +10,56 @@ class Order extends CI_Model {
 
     protected $xml = null;
     protected $customer_name = null;
-    protected $patty_names = array();
-    protected $patties = array();
+    protected $burgers = array();
+    protected $type = null;
+    protected $loaded_level = -1;
 
-    public function getCustomer(){
-        return $this->customer_name;
-    }
     // Constructor
     public function __construct() {
         parent::__construct();
     }
-    public function load($filename) {
-        $this->xml = simplexml_load_file(DATAPATH .$filename);
 
-        $this->customer_name = (string) $this->xml->customer;
-        // build a full list of patties - approach 2
-        /*
-        foreach ($this->xml->burger as $burger) {
-            $record = new stdClass();
-            $record->partty = (string) $burger->patty['type'];
-            $record->top = (string) $burger->cheese['top'];
-            $record->bottom=(string) $burger->cheese['bottom'];
-            $record->sauces = (float) $patty['price'];
-            $record->toppings = 'asdf';
-            $patties[$record->code] = $record;
-        }*/
+    //level specifies how much of the xml we want to parse
+    public function load($filename, $level = php_int_max) {
+        switch ($level) {
+            case $level >= 1:
+                $this->xml = simplexml_load_file(DATAPATH . $filename);
+                $this->customer_name = (string) $this->xml->customer;
+                $this->type = (string) $this->xml['type'];
+            case $level >= 2:
+                foreach ($this->xml->burger as $burger) {
+                    $record = new stdClass();
+                    $record->patty = (string)$burger->patty['type'];
+                    $record->top = (string) $burger->cheeses['top'];
+                    $record->bottom = (string) $burger->cheeses['bottom'];
+                    $sauces = array();
+                    $toppings = array();
+                    foreach ($burger->sauce as $sauce)
+                        array_push($sauces, $sauce['type']);
+                    foreach ($burger->topping as $topping)
+                        array_push($toppings, $topping['type']);
+                    $record->toppings = $toppings;
+                    $record->sauces = $sauces;
+                    array_push($this->burgers, $record);
+                }
+        }
+        $this->loaded_level = ($level);
     }
 
-    // retrieve a list of patties, to populate a dropdown, for instance
-    function patties() {
-        return $this->patty_names;
+    // retrieve a list of burgers in the order
+    function burgers() {
+        return $this->burgers;
     }
 
-    // retrieve a patty record, perhaps for pricing
-    function getPatty($code) {
-        if (isset($this->patties[$code]))
-            return $this->patties[$code];
-        else
-            return null;
+    /* getter methods */
+
+    public function getCustomer() {
+        return $this->customer_name;
+    }
+
+    /* getter methods */
+    public function getType() {
+        return $this->type;
     }
 
 }

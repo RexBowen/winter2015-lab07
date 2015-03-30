@@ -24,12 +24,13 @@ class Menu extends CI_Model {
             $record->code = (string) $patty['code'];
             $record->name = (string) $patty;
             $record->price = (float) $patty['price'];
-            $patties[$record->code] = $record;
+            $this->patties[$record->code] = $record;
+            
         }
-        /*
+        
         $this->__readCheese();
         $this->__readSauce();
-        $this->__readTopping();*/
+        $this->__readTopping();
     }
 
     private function __readCheese() {
@@ -38,7 +39,7 @@ class Menu extends CI_Model {
             $record->code = (string) $item['code'];
             $record->name = (string) $item;
             $record->price = (float) $item['price'];
-            $this->$cheeses[$record->code] = $record;
+            $this->cheeses[$record->code] = $record;
         }
     }
 
@@ -48,7 +49,7 @@ class Menu extends CI_Model {
             $record = new stdClass();
             $record->code = (string) $item['code'];
             $record->name = (string) $item;
-            $this->$sauces[$record->code] = $record;
+            $this->sauces[$record->code] = $record;
         }
     }
 
@@ -58,7 +59,7 @@ class Menu extends CI_Model {
             $record->code = (string) $item['code'];
             $record->name = (string) $item;
             $record->price = (float) $item['price'];
-            $this->$toppings[$record->code] = $record;
+            $this->toppings[$record->code] = $record;
         }
     }
 
@@ -69,28 +70,28 @@ class Menu extends CI_Model {
 
     function getCheese($code) {
         if (isset($this->cheeses[$code]))
-            return $this->cheeses[$code];
+            return $this->cheeses[$code]->name;
         else
             return null;
     }
 
     function getSauce($code) {
         if (isset($this->sauces[$code]))
-            return $this->sauces[$code];
+            return $this->sauces[$code]->name;
         else
             return null;
     }
 
     function getPatty($code) {
         if (isset($this->patties[$code]))
-            return $this->patties[$code];
+            return $this->patties[$code]->name;
         else
-            return null;
+            return 'null';
     }
 
     function getTopping($code) {
         if (isset($this->toppings[$code]))
-            return $this->toppings[$code];
+            return $this->toppings[$code]->name;
         else
             return null;
     }
